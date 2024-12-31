@@ -1,4 +1,4 @@
-name: Web Build + Deployment to GitHub Pages 
+name: Web Build + Deployment to GitHub Pages
 
 on:
   push:
@@ -48,6 +48,10 @@ jobs:
       run: |
         echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}, USER: ${GITHUB_REPOSITORY%/*}, PROJECT_BASE_URL: /${GITHUB_REPOSITORY#*/}/"
         flutter config --no-analytics
+        if [ ! -f "main.py" ]; then
+          echo "Error: main.py not found in repository root!"
+          exit 1
+        fi
         flet build web --base-url "/${GITHUB_REPOSITORY#*/}/" --route-url-strategy hash
 
     - name: Upload Artifact
